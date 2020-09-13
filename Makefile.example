@@ -1,0 +1,62 @@
+DISTFILES=Makefile Makefile.config Makefile.example README.md $(SRCC) $(SRCH) $(SRCS) $(OTHEROBJS) $(DATA)
+
+TARFILE=$(PROJECT).tar.gz
+
+all: .depend $(PROJECT).cof $(PROJECT).bin
+
+.PHONY: all dist alpine bjl catnip debug skunk reset
+
+$(PROJECT).cof: $(SRCH) $(OBJS) Makefile $(OTHEROBJS)
+	$(ALN) -a 4000 x x $(ALNFLAGS) -e -o $@ crt0.o $(OBJS) $(OTHEROBJS) $(RMVLIBS) jlibc.a libgcc.a
+
+$(PROJECT).bin: $(SRCH) $(OBJS) Makefile $(OTHEROBJS)
+	$(ALN) -a 4000 x x $(ALNFLAGS) -n -o $@ crt0.o $(OBJS) $(OTHEROBJS) $(RMVLIBS) jlibc.a libgcc.a
+
+$(PROJECT).abs: $(SRCH) $(OBJS) Makefile $(OTHEROBJS)
+	$(ALN) -a 802000 x 4000 $(ALNFLAGS) -o $@ crt0.o $(OBJS) $(OTHEROBJS) $(RMVLIBS) jlibc.a libgcc.a
+
+$(PROJECT).rom: Univ.bin $(PROJECT).abs
+	cat Univ.bin > $@
+	tail -c +37 $(PROJECT).abs >> $@
+	@i=`wc -c $@ | cut -d ' ' -f 1`; head -c `expr 4096 '*' 1024 - $$i` /dev/urandom >> $@
+
+%.o: %.s
+	$(MADMAC) $(MACFLAGS) $<
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $<
+
+dist: $(PROJECT).cof $(PROJECT).bin
+	mkdir -p $(PROJECT)
+	cp -a $(DISTFILES) $(PROJECT).cof $(PROJECT).bin $(PROJECT)
+	tar cfvzh $(TARFILE) $(PROJECT)
+	rm -rf $(PROJECT)
+
+alpine: $(PROJECT).cof
+	$(RDB) $<
+
+bjl: $(PROJECT).bin
+	$(LO) -8 $<
+
+catnip: $(PROJECT).bin
+	$(CATNIPLO) $< $(CATNIPTTY)
+
+debug: $(PROJECT).cof
+	$(WDB) $<
+
+skunk: $(PROJECT).cof
+	$(JCP) $<
+
+flash: $(PROJECT).abs
+	$(JCP) -f $<
+
+reset:
+	$(JCP) -r || true
+
+clean:
+	rm -f *~ $(OBJS) $(PROJECT).{cof,bin,img,rom,abs} $(EXTRAS)
+
+.depend: $(SRCC)
+	$(CC) $(CFLAGS) -MM $(SRCC) > .depend || [ "$(SRCC)" = "" ]
+
+-include .depend
