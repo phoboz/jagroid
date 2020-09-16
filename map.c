@@ -108,7 +108,7 @@ static void copy_zone(screen *tiles, screen *tgt, level_data_t *lvl, int x, int 
   }
 }
 
-void load_map(display *d, level_t *lvl, enum scroll_dir dir, uint8_t tiles_img[], uint16_t tiles_pal[], int tiles_ncols) {
+void load_map(display *d, level_t *lvl, enum scroll_dir dir, uint8_t tiles_img[], uint16_t tiles_pal[], int tiles_ncols, int x, int y) {
   screen *tmp = new_screen();
   set_simple_screen(DEPTH8, 320, HEIGHT, tmp, (phrase *) tiles_img);
 
@@ -160,17 +160,20 @@ void load_map(display *d, level_t *lvl, enum scroll_dir dir, uint8_t tiles_img[]
   level_data.data = (uint8_t *) malloc(level_data.ncols * level_data.nrows);
   memcpy(level_data.data, lvl->data, level_data.ncols * level_data.nrows);
 
-  map_x = 0;
-  map_y = 0;
+  map_x = x * 16;
+  map_y = y * 16;
   map_width = level_data.ncols * 16;
   map_height = level_data.nrows * 16;
 
-  copy_zone(tiles, scr1, &level_data, 0, 0, 0, HEIGHT/16, 0, WIDTH/16);
+  int map_tx = map_x / 16;
+  int map_ty = map_y / 16;
+
+  copy_zone(tiles, scr1, &level_data, 0, 0, map_ty, HEIGHT/16 + map_ty, map_tx, WIDTH/16 + map_tx);
 
   if (dir == SCROLL_DIR_HORIZONTAL) {
-    copy_zone(tiles, scr2, &level_data, 0, 0, 0, HEIGHT/16, WIDTH/16 + 1, WIDTH/16 + 2);
+    copy_zone(tiles, scr2, &level_data, 0, 0, map_ty, HEIGHT/16 + map_ty, WIDTH/16 + map_tx, WIDTH/16 + map_tx + 1);
   } else if (dir == SCROLL_DIR_VERTICAL) {
-    copy_zone(tiles, scr2, &level_data, 0, 0, HEIGHT/16 + 0, HEIGHT/16 + 1, 0, WIDTH/16);
+    copy_zone(tiles, scr2, &level_data, 0, 0, HEIGHT/16 + map_ty, HEIGHT/16 + map_ty + 1, map_tx, WIDTH/16 + map_tx);
   }
 
   show_display(d);
@@ -196,9 +199,9 @@ void scroll_map_right(void) {
     spr2->x--;
 
     if ((map_x & 15) == 8) {
-      int map_tp = map_x >> 4;
-      int dx = (map_tp << 4) % WIDTH;
-      copy_zone(tiles, scr2, &level_data, dx, 0, 0, HEIGHT/16, WIDTH/16 + map_tp, WIDTH/16 + map_tp + 1);
+      int map_tx = map_x >> 4;
+      int dx = -spr1->x - 8;
+      copy_zone(tiles, scr2, &level_data, dx, 0, 0, HEIGHT/16, WIDTH/16 + map_tx, WIDTH/16 + map_tx + 1);
     }
   }
 }
@@ -223,9 +226,9 @@ void scroll_map_left(void) {
     spr2->x++;
 
     if ((map_x & 15) == 8) {
-      int map_tp = map_x >> 4;
-      int dx = (map_tp << 4) % WIDTH;
-      copy_zone(tiles, scr1, &level_data, dx, 0, 0, HEIGHT/16, map_tp, map_tp + 1);
+      int map_tx = map_x >> 4;
+      int dx = -spr1->x - 8;
+      copy_zone(tiles, scr1, &level_data, dx, 0, 0, HEIGHT/16, map_tx, map_tx + 1);
     }
   }
 }
@@ -250,9 +253,9 @@ void scroll_map_down(void) {
     spr2->y--;
 
     if ((map_y & 15) == 8) {
-      int map_tp = map_y >> 4;
-      int dy = (map_tp << 4) % HEIGHT;
-      copy_zone(tiles, scr2, &level_data, 0, dy, HEIGHT/16 + map_tp, HEIGHT/16 + map_tp + 1, 0, WIDTH/16);
+      int map_ty = map_y >> 4;
+      int dy = -spr1->y - 8;
+      copy_zone(tiles, scr2, &level_data, 0, dy, HEIGHT/16 + map_ty, HEIGHT/16 + map_ty + 1, 0, WIDTH/16);
     }
   }
 }
@@ -277,9 +280,9 @@ void scroll_map_up(void) {
     spr2->y++;
 
     if ((map_y & 15) == 8) {
-      int map_tp = map_y >> 4;
-      int dy = (map_tp << 4) % HEIGHT;
-      copy_zone(tiles, scr1, &level_data, 0, dy, map_tp, map_tp + 1, 0, WIDTH/16);
+      int map_ty = map_y >> 4;
+      int dy = -spr1->y - 8;
+      copy_zone(tiles, scr1, &level_data, 0, dy, map_ty, map_ty + 1, 0, WIDTH/16);
     }
   }
 }

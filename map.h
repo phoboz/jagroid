@@ -16,7 +16,7 @@ enum scroll_dir {
 };
 
 void init_map_lib(display *d);
-void load_map(display *d, level_t *lvl, enum scroll_dir dir, uint8_t tiles_img[], uint16_t tiles_pal[], int tiles_ncols);
+void load_map(display *d, level_t *lvl, enum scroll_dir dir, uint8_t tiles_img[], uint16_t tiles_pal[], int tiles_ncols, int x, int y);
 void scroll_map_right(void);
 void scroll_map_left(void);
 void scroll_map_down(void);

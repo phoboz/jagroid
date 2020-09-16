@@ -7,13 +7,7 @@
 #include <screen.h>
 #include <joypad.h>
 #include "map.h"
-
-#define NCOLS 16
-
-extern uint16_t tiscavPal[NCOLS];
-extern uint8_t tiscavTiles[];
-extern level_t tiscavLevel01;
-extern level_t tiscavLevel02;
+#include "data.h"
 
 unsigned long lock_keys;
 
@@ -28,7 +22,7 @@ int main(int argc, char *argv[]) {
   d->y = 16;
 
   init_map_lib(d);
-  load_map(d, &tiscavLevel01, SCROLL_DIR_HORIZONTAL, tiscavTiles, tiscavPal, NCOLS);
+  load_map(d, &tiscavLevel01, SCROLL_DIR_HORIZONTAL, tiscavTiles, tiscavPal, MAP_NCOLS, 0, 0);
 
   joypad_state joypads;
 
@@ -60,13 +54,13 @@ int main(int argc, char *argv[]) {
     } else if (cmd & JOYPAD_1) {
       if ((lock_keys & JOYPAD_1) == 0) {
         free_map();
-        load_map(d, &tiscavLevel01, SCROLL_DIR_HORIZONTAL, tiscavTiles, tiscavPal, NCOLS);
+        load_map(d, &tiscavLevel01, SCROLL_DIR_HORIZONTAL, tiscavTiles, tiscavPal, MAP_NCOLS, 23, 0);
         lock_keys |= JOYPAD_1;
       }
     } else if (cmd & JOYPAD_2) {
       if ((lock_keys & JOYPAD_2) == 0) {
         free_map();
-        load_map(d, &tiscavLevel02, SCROLL_DIR_VERTICAL, tiscavTiles, tiscavPal, NCOLS);
+        load_map(d, &tiscavLevel02, SCROLL_DIR_VERTICAL, tiscavTiles, tiscavPal, MAP_NCOLS, 0, 13);
         lock_keys |= JOYPAD_2;
       }
     }
