@@ -54,13 +54,15 @@ int main(int argc, char *argv[]) {
     } else if (cmd & JOYPAD_1) {
       if ((lock_keys & JOYPAD_1) == 0) {
         free_map();
-        load_map(d, &tiscavLevel01, SCROLL_DIR_HORIZONTAL, tiscavTiles, tiscavPal, MAP_NCOLS, 23, 0);
+        int x = rand() % (tiscavLevel01.ncols - 20);
+        load_map(d, &tiscavLevel01, SCROLL_DIR_HORIZONTAL, tiscavTiles, tiscavPal, MAP_NCOLS, x, 0);
         lock_keys |= JOYPAD_1;
       }
     } else if (cmd & JOYPAD_2) {
       if ((lock_keys & JOYPAD_2) == 0) {
         free_map();
-        load_map(d, &tiscavLevel02, SCROLL_DIR_VERTICAL, tiscavTiles, tiscavPal, MAP_NCOLS, 0, 13);
+        int y = rand() % (tiscavLevel02.nrows - 12);
+        load_map(d, &tiscavLevel02, SCROLL_DIR_VERTICAL, tiscavTiles, tiscavPal, MAP_NCOLS, 0, y);
         lock_keys |= JOYPAD_2;
       }
     }
