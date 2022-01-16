@@ -1,7 +1,7 @@
 include	Makefile.config
 
 PROJECT=jagroid
-SRCC=main.c map.c
+SRCC=main.c border.c map.c
 SRCS=data.s
 SRCH=
 OBJS=$(SRCC:.c=.o) $(SRCS:.s=.o) 

@@ -26,15 +26,6 @@ typedef struct {
   uint8_t *data;
 } level_data_t;
 
-static screen *black_screen_ver;
-static screen *black_screen_hor;
-static phrase *black_buf_ver;
-static phrase *black_buf_hor;
-static sprite *black_border1;
-static sprite *black_border2;
-static sprite *black_border3;
-static sprite *black_border4;
-
 static tile_t *tile_data;
 static level_data_t level_data;
 static int map_x;
@@ -55,34 +46,6 @@ static screen *scr1;
 static screen *scr2;
 static sprite *spr1;
 static sprite *spr2;
-
-void init_map_lib(display *d) {
-  black_screen_ver = new_screen();
-  black_buf_ver = alloc_simple_screen(DEPTH16, 16, HEIGHT, black_screen_ver);
-
-  black_border1 = sprite_of_screen(BORDER_WIDTH - 16, 0, black_screen_ver);
-  black_border1->trans = 0;
-
-  black_border2 = sprite_of_screen(WIDTH - BORDER_WIDTH, 0, black_screen_ver);
-  black_border2->trans = 0;
-
-  black_screen_hor = new_screen();
-  black_buf_hor = alloc_simple_screen(DEPTH16, WIDTH, 64, black_screen_hor);
-
-  black_border3 = sprite_of_screen(0, BORDER_HEIGHT - 64, black_screen_hor);
-  black_border3->trans = 0;
-
-  black_border4 = sprite_of_screen(0, HEIGHT - BORDER_HEIGHT, black_screen_hor);
-  black_border4->trans = 0;
-
-  clear_screen(black_screen_ver);
-  clear_screen(black_screen_hor);
-
-  attach_sprite_to_display_at_layer(black_border1, d, 1);
-  attach_sprite_to_display_at_layer(black_border2, d, 1);
-  attach_sprite_to_display_at_layer(black_border3, d, 1);
-  attach_sprite_to_display_at_layer(black_border4, d, 1);
-}
 
 static void copy_column(screen *tiles, screen *tgt, level_data_t *lvl, int lrow, int hrow, int colno) {
   uint16_t nrows = lvl->nrows;
@@ -108,7 +71,7 @@ static void copy_zone(screen *tiles, screen *tgt, level_data_t *lvl, int x, int 
   }
 }
 
-void load_map(display *d, level_t *lvl, enum scroll_dir dir, uint8_t tiles_img[], uint16_t tiles_pal[], int tiles_ncols, int x, int y) {
+void load_map(level_t *lvl, enum scroll_dir dir, uint8_t tiles_img[], uint16_t tiles_pal[], int tiles_ncols, int x, int y) {
   screen *tmp = new_screen();
   set_simple_screen(DEPTH8, 320, HEIGHT, tmp, (phrase *) tiles_img);
 
@@ -144,9 +107,6 @@ void load_map(display *d, level_t *lvl, enum scroll_dir dir, uint8_t tiles_img[]
   spr1 = screen1_sprite;
   spr2 = screen2_sprite;
 
-  attach_sprite_to_display_at_layer(screen1_sprite, d, 0);
-  attach_sprite_to_display_at_layer(screen2_sprite, d, 0);
-
   tile_data = (tile_t *) malloc(sizeof(tile_t) * NUM_TILES);
 
   int i;
@@ -175,8 +135,16 @@ void load_map(display *d, level_t *lvl, enum scroll_dir dir, uint8_t tiles_img[]
   } else if (dir == SCROLL_DIR_VERTICAL) {
     copy_zone(tiles, scr2, &level_data, 0, 0, HEIGHT/16 + map_ty, HEIGHT/16 + map_ty + 1, map_tx, WIDTH/16 + map_tx);
   }
+}
 
-  show_display(d);
+void show_map(display *d, int layer) {
+  attach_sprite_to_display_at_layer(screen1_sprite, d, layer);
+  attach_sprite_to_display_at_layer(screen2_sprite, d, layer);
+}
+
+void hide_map(void) {
+  detach_sprite_from_display(screen1_sprite);
+  detach_sprite_from_display(screen2_sprite);
 }
 
 void scroll_map_right(void) {
@@ -288,9 +256,6 @@ void scroll_map_up(void) {
 }
 
 void free_map(void) {
-  detach_sprite_from_display(screen1_sprite);
-  detach_sprite_from_display(screen2_sprite);
-
   free(screen1_sprite);
   free(screen1_data);
   free(screen1);

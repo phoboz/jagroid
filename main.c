@@ -6,6 +6,7 @@
 #include <sprite.h>
 #include <screen.h>
 #include <joypad.h>
+#include "border.h"
 #include "map.h"
 #include "data.h"
 
@@ -21,8 +22,14 @@ int main(int argc, char *argv[]) {
   d->x = 20;
   d->y = 16;
 
-  init_map_lib(d);
-  load_map(d, &tiscavLevel01, SCROLL_DIR_HORIZONTAL, tiscavTiles, tiscavPal, MAP_NCOLS, 0, 0);
+  //init_map_lib(d);
+  init_border();
+
+  load_map(&tiscavLevel01, SCROLL_DIR_HORIZONTAL, tiscavTiles, tiscavPal, MAP_NCOLS, 0, 0);
+
+  show_border(d);
+  show_map(d, 0);
+  show_display(d);
 
   joypad_state joypads;
 
@@ -53,16 +60,20 @@ int main(int argc, char *argv[]) {
       scroll_map_up();
     } else if (cmd & JOYPAD_1) {
       if ((lock_keys & JOYPAD_1) == 0) {
+	hide_map();
         free_map();
         int x = rand() % (tiscavLevel01.ncols - 20);
-        load_map(d, &tiscavLevel01, SCROLL_DIR_HORIZONTAL, tiscavTiles, tiscavPal, MAP_NCOLS, x, 0);
+        load_map(&tiscavLevel01, SCROLL_DIR_HORIZONTAL, tiscavTiles, tiscavPal, MAP_NCOLS, x, 0);
+	show_map(d, 0);
         lock_keys |= JOYPAD_1;
       }
     } else if (cmd & JOYPAD_2) {
       if ((lock_keys & JOYPAD_2) == 0) {
+	hide_map();
         free_map();
         int y = rand() % (tiscavLevel02.nrows - 12);
-        load_map(d, &tiscavLevel02, SCROLL_DIR_VERTICAL, tiscavTiles, tiscavPal, MAP_NCOLS, 0, y);
+        load_map(&tiscavLevel02, SCROLL_DIR_VERTICAL, tiscavTiles, tiscavPal, MAP_NCOLS, 0, y);
+	show_map(d, 0);
         lock_keys |= JOYPAD_2;
       }
     }
@@ -70,6 +81,7 @@ int main(int argc, char *argv[]) {
     wait_display_refresh();
   }
 
+  hide_map();
   free_map();
 }
 
