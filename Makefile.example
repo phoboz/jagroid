@@ -1,24 +1,29 @@
-DISTFILES=Makefile Makefile.config Makefile.example README.md $(SRCC) $(SRCH) $(SRCS) $(OTHEROBJS) $(DATA)
+DISTFILES=Makefile Makefile.config Makefile.example README $(SRCC) $(SRCH) $(SRCS) $(OTHEROBJS) $(DATA)
 
 TARFILE=$(PROJECT).tar.gz
 
-all: .depend $(PROJECT).cof $(PROJECT).bin
+all: .depend subdirs $(PROJECT).cof $(PROJECT).bin
 
-.PHONY: all dist alpine bjl catnip debug skunk reset
+.PHONY: all dist alpine bjl catnip debug skunk reset subdirs $(SUBDIRS)
 
-$(PROJECT).cof: $(SRCH) $(OBJS) Makefile $(OTHEROBJS)
-	$(ALN) -a 4000 x x $(ALNFLAGS) -e -o $@ crt0.o $(OBJS) $(OTHEROBJS) $(RMVLIBS) jlibc.a $(LIBGCC)/libgcc.a
+$(PROJECT).cof: $(SRCH) $(OBJS) Makefile $(OTHEROBJS) $(OTHERDEPS)
+	$(ALN) -a 4000 x x $(ALNFLAGS) -e -o $@ crt0.o $(OBJS) $(OTHEROBJS) $(RMVLIBS) jlibc.a libgcc.a $(INCBIN)
 
-$(PROJECT).bin: $(SRCH) $(OBJS) Makefile $(OTHEROBJS)
-	$(ALN) -a 4000 x x $(ALNFLAGS) -n -o $@ crt0.o $(OBJS) $(OTHEROBJS) $(RMVLIBS) jlibc.a $(LIBGCC)/libgcc.a
+$(PROJECT).bin: $(SRCH) $(OBJS) Makefile $(OTHEROBJS) $(OTHERDEPS)
+	$(ALN) -a 4000 x x $(ALNFLAGS) -n -o $@ crt0.o $(OBJS) $(OTHEROBJS) $(RMVLIBS) jlibc.a libgcc.a $(INCBIN)
 
-$(PROJECT).abs: $(SRCH) $(OBJS) Makefile $(OTHEROBJS)
-	$(ALN) -a 802000 x 4000 $(ALNFLAGS) -o $@ crt0.o $(OBJS) $(OTHEROBJS) $(RMVLIBS) jlibc.a $(LIBGCC)/libgcc.a
+$(PROJECT).abs: $(SRCH) $(OBJS) Makefile $(OTHEROBJS) $(OTHERDEPS)
+	$(ALN) -a 802000 x 4000 $(ALNFLAGS) -o $@ crt0.o $(OBJS) $(OTHEROBJS) $(RMVLIBS) jlibc.a libgcc.a $(INCBIN)
 
 $(PROJECT).rom: Univ.bin $(PROJECT).abs
 	cat Univ.bin > $@
 	tail -c +37 $(PROJECT).abs >> $@
 	@i=`wc -c $@ | cut -d ' ' -f 1`; head -c `expr 4096 '*' 1024 - $$i` /dev/urandom >> $@
+
+subdirs: $(SUBDIRS)
+
+$(SUBDIRS):
+	$(MAKE) -C $@
 
 %.o: %.s
 	$(MADMAC) $(MACFLAGS) $<
@@ -47,6 +52,9 @@ debug: $(PROJECT).cof
 skunk: $(PROJECT).cof
 	$(JCP) $<
 
+interactive: $(PROJECT).cof
+	$(JCP) -c $<
+
 flash: $(PROJECT).abs
 	$(JCP) -f $<
 
@@ -54,6 +62,7 @@ reset:
 	$(JCP) -r || true
 
 clean:
+	for dir in $(SUBDIRS); do $(MAKE) clean -C $$dir; done
 	rm -f *~ $(OBJS) $(PROJECT).{cof,bin,img,rom,abs} $(EXTRAS)
 
 .depend: $(SRCC)
