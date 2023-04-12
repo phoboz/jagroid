@@ -30,6 +30,7 @@
 #include <sprite.h>
 #include <display.h>
 #include <lz77.h>
+#include "image.h"
 #include "map.h"
 
 int map_anim_dir;

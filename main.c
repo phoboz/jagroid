@@ -6,9 +6,13 @@
 #include <sprite.h>
 #include <screen.h>
 #include <joypad.h>
+#include "config.h"
 #include "border.h"
+#include "image.h"
 #include "draw_map.h"
 #include "data.h"
+
+void *gpu_addr;
 
 unsigned long lock_keys;
 
@@ -20,15 +24,17 @@ int main(int argc, char *argv[]) {
   init_interrupts();
   init_display_driver();
 
+  gpu_addr = &_GPU_FREE_RAM;
+  init_image_lib();
+
   display *d = new_display(0);
 
   d->x = 20;
   d->y = 16;
 
-  //init_map_lib(d);
   init_border();
 
-  tile_map = load_map(16, 16, 320, 192, &tiles_01, &level_01);
+  tile_map = load_map(16, 16, TILE_IMAGE_WIDTH, TILE_IMAGE_HEIGHT, &tiles_01, &level_01);
   init_map_layer(&map_layer, tile_map, SCROLL_DIR_HORIZONTAL, 0, 0);
 
   memcpy((void*)TOMREGS->clut1, tiles_01_pal, MAP_NCOLS * sizeof(uint16_t));

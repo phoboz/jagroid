@@ -8,7 +8,7 @@
 #define BORDER_X0                       16
 #define BORDER_X1                       (320 - BORDER_X0)
 #define BORDER_Y0                       16
-#define BORDER_Y1                       (200 - BORDER_Y0)
+#define BORDER_Y1                       (208 - BORDER_Y0)
 
 #define BORDER_LAYER                    14
 
