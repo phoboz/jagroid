@@ -35,10 +35,10 @@ typedef struct map_layer {
 void init_map_layer(map_layer_t *l, Map *tile_map, enum scroll_dir dir, int x, int y);
 void show_map_layer(display *d, int layer, map_layer_t *l);
 void hide_map_layer(map_layer_t *l);
-void scroll_map_layer_right(map_layer_t *l);
-void scroll_map_layer_left(map_layer_t *l);
-void scroll_map_layer_down(map_layer_t *l);
-void scroll_map_layer_up(map_layer_t *l);
+void scroll_map_layer_right(map_layer_t *l, int dx);
+void scroll_map_layer_left(map_layer_t *l, int dx);
+void scroll_map_layer_down(map_layer_t *l, int dy);
+void scroll_map_layer_up(map_layer_t *l, int dy);
 void free_map_layer(map_layer_t *l);
 
 #endif

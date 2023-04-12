@@ -12,6 +12,8 @@
 #include "draw_map.h"
 #include "data.h"
 
+#define SCROLL_SPEED 2
+
 void *gpu_addr;
 
 unsigned long lock_keys;
@@ -63,13 +65,13 @@ int main(int argc, char *argv[]) {
     }
 
     if(cmd & JOYPAD_RIGHT) {
-      scroll_map_layer_right(&map_layer);
+      scroll_map_layer_right(&map_layer, SCROLL_SPEED);
     } else if(cmd & JOYPAD_LEFT) {
-      scroll_map_layer_left(&map_layer);
+      scroll_map_layer_left(&map_layer, SCROLL_SPEED);
     } else if (cmd & JOYPAD_DOWN) {
-      scroll_map_layer_down(&map_layer);
+      scroll_map_layer_down(&map_layer, SCROLL_SPEED);
     } else if (cmd & JOYPAD_UP) {
-      scroll_map_layer_up(&map_layer);
+      scroll_map_layer_up(&map_layer, SCROLL_SPEED);
     } else if (cmd & JOYPAD_1) {
       if ((lock_keys & JOYPAD_1) == 0) {
 	hide_map_layer(&map_layer);

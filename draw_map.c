@@ -82,9 +82,9 @@ void hide_map_layer(map_layer_t *l) {
   detach_sprite_from_display(l->screen2_sprite);
 }
 
-void scroll_map_layer_right(map_layer_t *l) {
+void scroll_map_layer_right(map_layer_t *l, int dx) {
   if (l->map_x < l->layer_width - SCREEN_WIDTH) {
-    l->map_x++;
+    l->map_x += dx;
 
     if (l->spr1->x <= -SCREEN_WIDTH) {
       l->spr1->x += 2 * SCREEN_WIDTH;
@@ -98,8 +98,8 @@ void scroll_map_layer_right(map_layer_t *l) {
       l->spr2 = tmp_spr;
     }
 
-    l->spr1->x--;
-    l->spr2->x--;
+    l->spr1->x -= dx;
+    l->spr2->x -= dx;
 
     if ((l->map_x & 15) == 8) {
       int map_tx = l->map_x >> 4;
@@ -109,9 +109,9 @@ void scroll_map_layer_right(map_layer_t *l) {
   }
 }
 
-void scroll_map_layer_left(map_layer_t *l) {
+void scroll_map_layer_left(map_layer_t *l, int dx) {
   if (l->map_x > 0) {
-    l->map_x--;
+    l->map_x -= dx;
 
     if (l->spr2->x >= SCREEN_WIDTH) {
       l->spr2->x -= 2 * SCREEN_WIDTH;
@@ -125,8 +125,8 @@ void scroll_map_layer_left(map_layer_t *l) {
       l->spr2 = tmp_spr;
     }
 
-    l->spr1->x++;
-    l->spr2->x++;
+    l->spr1->x += dx;
+    l->spr2->x += dx;
 
     if ((l->map_x & 15) == 8) {
       int map_tx = l->map_x >> 4;
@@ -136,9 +136,9 @@ void scroll_map_layer_left(map_layer_t *l) {
   }
 }
 
-void scroll_map_layer_down(map_layer_t *l) {
+void scroll_map_layer_down(map_layer_t *l, int dy) {
   if (l->map_y < l->layer_height - SCREEN_HEIGHT) {
-    l->map_y++;
+    l->map_y += dy;
 
     if (l->spr1->y <= -SCREEN_HEIGHT) {
       l->spr1->y += 2 * SCREEN_HEIGHT;
@@ -152,8 +152,8 @@ void scroll_map_layer_down(map_layer_t *l) {
       l->spr2 = tmp_spr;
     }
 
-    l->spr1->y--;
-    l->spr2->y--;
+    l->spr1->y -= dy;
+    l->spr2->y -= dy;
 
     if ((l->map_y & 15) == 8) {
       int map_ty = l->map_y >> 4;
@@ -163,9 +163,9 @@ void scroll_map_layer_down(map_layer_t *l) {
   }
 }
 
-void scroll_map_layer_up(map_layer_t *l) {
+void scroll_map_layer_up(map_layer_t *l, int dy) {
   if (l->map_y > 0) {
-    l->map_y--;
+    l->map_y -= dy;
 
     if (l->spr2->y >= SCREEN_HEIGHT) {
       l->spr2->y -= 2 * SCREEN_HEIGHT;
@@ -179,8 +179,8 @@ void scroll_map_layer_up(map_layer_t *l) {
       l->spr2 = tmp_spr;
     }
 
-    l->spr1->y++;
-    l->spr2->y++;
+    l->spr1->y += dy;
+    l->spr2->y += dy;
 
     if ((l->map_y & 15) == 8) {
       int map_ty = l->map_y >> 4;
