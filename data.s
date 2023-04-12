@@ -22,6 +22,21 @@ _tiscavLevel01:
 _tiscavLevel02:
 	incbin	"levels/tiscav02.lev"
 
+	.globl  _tiles_01_pal
+	.even
+_tiles_01_pal:
+	incbin  "images/tiles_01_cry.pal"
+
+	.globl  _tiles_01
+	.phrase
+_tiles_01:
+	incbin  "images/tiles_01.map"
+
+	.globl	_level_01
+	.even
+_level_01:
+	incbin	"levels/level_01.lev"
+
 	gfx_data	_player_frame_01,	"images/player_frame_01.rgb"
 	gfx_data	_player_frame_02,	"images/player_frame_02.rgb"
 	gfx_data	_player_frame_03,	"images/player_frame_03.rgb"
