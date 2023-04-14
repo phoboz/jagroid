@@ -1,7 +1,10 @@
 #include <stdlib.h>
+#include <display.h>
 #include <sprite.h>
 #include <screen.h>
 #include "border.h"
+
+extern display *game_display;
 
 static screen *border_screen_ver;
 static phrase *border_buf_ver;
@@ -41,12 +44,12 @@ void init_border(void)
   border_sprite_bottom->trans = 0;
 }
 
-void show_border(display *d)
+void show_border(void)
 {
-  attach_sprite_to_display_at_layer(border_sprite_left, d, BORDER_LAYER);
-  attach_sprite_to_display_at_layer(border_sprite_right, d, BORDER_LAYER);
-  attach_sprite_to_display_at_layer(border_sprite_top, d, BORDER_LAYER);
-  attach_sprite_to_display_at_layer(border_sprite_bottom, d, BORDER_LAYER);
+  attach_sprite_to_display_at_layer(border_sprite_left, game_display, BORDER_LAYER);
+  attach_sprite_to_display_at_layer(border_sprite_right, game_display, BORDER_LAYER);
+  attach_sprite_to_display_at_layer(border_sprite_top, game_display, BORDER_LAYER);
+  attach_sprite_to_display_at_layer(border_sprite_bottom, game_display, BORDER_LAYER);
 }
 
 void hide_border(void)

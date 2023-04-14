@@ -35,16 +35,16 @@ int main(int argc, char *argv[]) {
   gpu_addr = &_GPU_FREE_RAM;
   init_image_lib();
 
-  display *d = new_display(0);
+  display *game_display = new_display(0);
 
-  d->x = 20;
-  d->y = 16;
+  game_display->x = 20;
+  game_display->y = 16;
 
   init_border();
 
 #ifdef DEBUG
   fp = open_custom_console(
-    d,
+    game_display,
     0,
     SCREEN_HEIGHT,
     255,
@@ -60,9 +60,9 @@ int main(int argc, char *argv[]) {
 
   memcpy((void*)TOMREGS->clut1, tiles_pal, MAP_NCOLS * sizeof(uint16_t));
 
-  show_border(d);
-  show_map_layer(d, 0, &map_layer);
-  show_display(d);
+  show_border();
+  show_map_layer(game_display, 0, &map_layer);
+  show_display(game_display);
 
   joypad_state joypads;
 
@@ -115,7 +115,7 @@ int main(int argc, char *argv[]) {
         tile_map = load_map(16, 16, TILE_IMAGE_WIDTH, TILE_IMAGE_HEIGHT, &tiles_01, &level_01);
         int x = rand() % (tile_map->w - 20);
         init_map_layer(&map_layer, tile_map, SCROLL_DIR_HORIZONTAL, x, 0);
-	show_map_layer(d, 0, &map_layer);
+	show_map_layer(game_display, 0, &map_layer);
         lock_keys |= JOYPAD_1;
       }
     } else if (cmd & JOYPAD_2) {
@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
         tile_map = load_map(16, 16, TILE_IMAGE_WIDTH, TILE_IMAGE_HEIGHT, &tiles_02, &level_02);
         int y = rand() % (tile_map->h - 12);
         init_map_layer(&map_layer, tile_map, SCROLL_DIR_VERTICAL, 0, y);
-	show_map_layer(d, 0, &map_layer);
+	show_map_layer(game_display, 0, &map_layer);
         lock_keys |= JOYPAD_2;
       }
     }

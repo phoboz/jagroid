@@ -1,19 +1,19 @@
 #ifndef _BORDER_H
 #define _BORDER_H
 
-#include <display.h>
+#include "config.h"
 
 #define BORDER_WIDTH                    64
 #define BORDER_HEIGHT                   128
-#define BORDER_X0                       16
-#define BORDER_X1                       (320 - BORDER_X0)
-#define BORDER_Y0                       16
-#define BORDER_Y1                       (208 - BORDER_Y0)
+#define BORDER_X0                       0
+#define BORDER_X1                       SCREEN_WIDTH
+#define BORDER_Y0                       0
+#define BORDER_Y1                       SCREEN_HEIGHT
 
 #define BORDER_LAYER                    14
 
 void init_border(void);
-void show_border(display *d);
+void show_border(void);
 void hide_border(void);
 
 #endif
