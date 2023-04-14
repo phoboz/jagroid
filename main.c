@@ -12,7 +12,7 @@
 #include "draw_map.h"
 #include "data.h"
 
-#define SCROLL_SPEED_1 6
+#define SCROLL_SPEED_1 3
 #define SCROLL_SPEED_2 2
 
 #ifdef DEBUG

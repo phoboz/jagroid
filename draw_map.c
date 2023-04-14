@@ -79,7 +79,7 @@ void hide_map_layer(map_layer_t *l) {
 }
 
 void scroll_map_layer_right(map_layer_t *l, int dx) {
-  if (l->map_x < l->layer_width - SCREEN_WIDTH) {
+  if (l->map_x + dx < l->layer_width - SCREEN_WIDTH) {
     l->map_x += dx;
 
     if (l->spr1->x <= -SCREEN_WIDTH) {
@@ -111,7 +111,7 @@ void scroll_map_layer_right(map_layer_t *l, int dx) {
 }
 
 void scroll_map_layer_left(map_layer_t *l, int dx) {
-  if (l->map_x > 0) {
+  if (l->map_x - dx > 0) {
     l->map_x -= dx;
 
     if (l->spr2->x >= SCREEN_WIDTH) {
@@ -143,7 +143,7 @@ void scroll_map_layer_left(map_layer_t *l, int dx) {
 }
 
 void scroll_map_layer_down(map_layer_t *l, int dy) {
-  if (l->map_y < l->layer_height - SCREEN_HEIGHT) {
+  if (l->map_y + dy < l->layer_height - SCREEN_HEIGHT) {
     l->map_y += dy;
 
     if (l->spr1->y <= -SCREEN_HEIGHT) {
@@ -174,7 +174,7 @@ void scroll_map_layer_down(map_layer_t *l, int dy) {
 }
 
 void scroll_map_layer_up(map_layer_t *l, int dy) {
-  if (l->map_y > 0) {
+  if (l->map_y - dy > 0) {
     l->map_y -= dy;
 
     if (l->spr2->y >= SCREEN_HEIGHT) {
