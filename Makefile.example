@@ -64,6 +64,11 @@ reset:
 clean:
 	for dir in $(SUBDIRS); do $(MAKE) clean -C $$dir; done
 	rm -f *~ $(OBJS) $(PROJECT).{cof,bin,img,rom,abs} $(EXTRAS)
+	rm -f $(PROJECT).cof
+	rm -f $(PROJECT).bin
+	rm -f $(PROJECT).img
+	rm -f $(PROJECT).rom
+	rm -f $(PROJECT).abs
 
 .depend: $(SRCC)
 	$(CC) $(CFLAGS) -MM $(SRCC) > .depend || [ "$(SRCC)" = "" ]

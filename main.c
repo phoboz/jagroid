@@ -21,6 +21,7 @@ FILE *fp;
 #endif
 
 void *gpu_addr;
+display *game_display;
 
 unsigned long lock_keys;
 
@@ -35,7 +36,7 @@ int main(int argc, char *argv[]) {
   gpu_addr = &_GPU_FREE_RAM;
   init_image_lib();
 
-  display *game_display = new_display(0);
+  game_display = new_display(0);
 
   game_display->x = 20;
   game_display->y = 16;
