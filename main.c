@@ -12,7 +12,13 @@
 #include "draw_map.h"
 #include "data.h"
 
-#define SCROLL_SPEED 2
+#define SCROLL_SPEED_1 6
+#define SCROLL_SPEED_2 2
+
+#ifdef DEBUG
+#include <stdio.h>
+FILE *fp;
+#endif
 
 void *gpu_addr;
 
@@ -36,6 +42,19 @@ int main(int argc, char *argv[]) {
 
   init_border();
 
+#ifdef DEBUG
+  fp = open_custom_console(
+    d,
+    0,
+    SCREEN_HEIGHT,
+    255,
+    40,
+    1,
+    15
+    );
+#endif
+
+  TOMREGS->bg = 0xff;
   tile_map = load_map(16, 16, TILE_IMAGE_WIDTH, TILE_IMAGE_HEIGHT, &tiles_01, &level_01);
   init_map_layer(&map_layer, tile_map, SCROLL_DIR_HORIZONTAL, 0, 0);
 
@@ -48,6 +67,10 @@ int main(int argc, char *argv[]) {
   joypad_state joypads;
 
   lock_keys = 0;
+
+#ifdef DEBUG
+  fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
+#endif
 
   while(1) {
     vsync();
@@ -65,13 +88,25 @@ int main(int argc, char *argv[]) {
     }
 
     if(cmd & JOYPAD_RIGHT) {
-      scroll_map_layer_right(&map_layer, SCROLL_SPEED);
+      scroll_map_layer_right(&map_layer, SCROLL_SPEED_1);
+#ifdef DEBUG
+  fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
+#endif
     } else if(cmd & JOYPAD_LEFT) {
-      scroll_map_layer_left(&map_layer, SCROLL_SPEED);
+      scroll_map_layer_left(&map_layer, SCROLL_SPEED_2);
+#ifdef DEBUG
+  fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
+#endif
     } else if (cmd & JOYPAD_DOWN) {
-      scroll_map_layer_down(&map_layer, SCROLL_SPEED);
+      scroll_map_layer_down(&map_layer, SCROLL_SPEED_1);
+#ifdef DEBUG
+  fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
+#endif
     } else if (cmd & JOYPAD_UP) {
-      scroll_map_layer_up(&map_layer, SCROLL_SPEED);
+      scroll_map_layer_up(&map_layer, SCROLL_SPEED_2);
+#ifdef DEBUG
+  fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
+#endif
     } else if (cmd & JOYPAD_1) {
       if ((lock_keys & JOYPAD_1) == 0) {
 	hide_map_layer(&map_layer);
@@ -101,5 +136,9 @@ int main(int argc, char *argv[]) {
 
   hide_map_layer(&map_layer);
   free_map_layer(&map_layer);
+
+#ifdef DEBUG
+  fclose(fp);
+#endif
 }
 

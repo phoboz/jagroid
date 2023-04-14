@@ -7,7 +7,7 @@
 #include "config.h"
 #include "draw_map.h"
 
-static void copy_column(screen *tgt, Map *tile_map, int lrow, int hrow, int colno) {
+__inline__ static void copy_column(screen *tgt, Map *tile_map, int lrow, int hrow, int colno) {
   uint16_t nrows = tile_map->h;
   uint16_t *data = tile_map->dat + colno * nrows;
   int i;
@@ -44,16 +44,12 @@ void init_map_layer(map_layer_t *l, Map *tile_map, enum scroll_dir dir, int x, i
     l->screen2_sprite = sprite_of_screen(0, SCREEN_HEIGHT, l->screen2);
   }
 
-  l->screen1_sprite->trans = 0;
-  l->screen2_sprite->trans = 0;
-
-  clear_screen(l->screen1);
-  clear_screen(l->screen2);
-
   l->scr1 = l->screen1;
   l->scr2 = l->screen2;
   l->spr1 = l->screen1_sprite;
   l->spr2 = l->screen2_sprite;
+  l->last_zone_1 = -1;
+  l->last_zone_2 = -1;
 
   l->map_x = x * 16;
   l->map_y = y * 16;
@@ -101,10 +97,15 @@ void scroll_map_layer_right(map_layer_t *l, int dx) {
     l->spr1->x -= dx;
     l->spr2->x -= dx;
 
-    if ((l->map_x & 15) == 8) {
-      int map_tx = l->map_x >> 4;
-      int dx = -l->spr1->x - 8;
-      copy_zone(l->scr2, l->tile_map, dx, 0, 0, SCREEN_HEIGHT/16, SCREEN_WIDTH/16 + map_tx, SCREEN_WIDTH/16 + map_tx + 1);
+    int xmod16 = l->map_x & 15;
+    if (xmod16 >= 8) {
+      int col = SCREEN_WIDTH/16 + (l->map_x >> 4);
+      if (col != l->last_zone_2) {
+        l->scr2->x = -l->spr1->x - xmod16;
+        l->scr2->y = 0;
+        copy_column(l->scr2, l->tile_map, 0, SCREEN_HEIGHT/16, col);
+        l->last_zone_2 = col;
+      }
     }
   }
 }
@@ -128,10 +129,15 @@ void scroll_map_layer_left(map_layer_t *l, int dx) {
     l->spr1->x += dx;
     l->spr2->x += dx;
 
-    if ((l->map_x & 15) == 8) {
-      int map_tx = l->map_x >> 4;
-      int dx = -l->spr1->x - 8;
-      copy_zone(l->scr1, l->tile_map, dx, 0, 0, SCREEN_HEIGHT/16, map_tx, map_tx + 1);
+    int xmod16 = l->map_x & 15;
+    if (xmod16 >= 8) {
+      int col = l->map_x >> 4;
+      if (col != l->last_zone_1) {
+        l->scr1->x = -l->spr1->x - xmod16;
+        l->scr1->y = 0;
+        copy_column(l->scr1, l->tile_map, 0, SCREEN_HEIGHT/16, col);
+        l->last_zone_1 = col;
+      }
     }
   }
 }
@@ -155,10 +161,14 @@ void scroll_map_layer_down(map_layer_t *l, int dy) {
     l->spr1->y -= dy;
     l->spr2->y -= dy;
 
-    if ((l->map_y & 15) == 8) {
-      int map_ty = l->map_y >> 4;
-      int dy = -l->spr1->y - 8;
-      copy_zone(l->scr2, l->tile_map, 0, dy, SCREEN_HEIGHT/16 + map_ty, SCREEN_HEIGHT/16 + map_ty + 1, 0, SCREEN_WIDTH/16);
+    int ymod16 = l->map_y & 15;
+    if (ymod16 >= 8) {
+      int row = SCREEN_HEIGHT/16 + (l->map_y >> 4);
+      if (row != l->last_zone_2) {
+        int dy = -l->spr1->y - ymod16;
+        copy_zone(l->scr2, l->tile_map, 0, dy, row, row + 1, 0, SCREEN_WIDTH/16);
+        l->last_zone_2 = row;
+      }
     }
   }
 }
@@ -182,10 +192,14 @@ void scroll_map_layer_up(map_layer_t *l, int dy) {
     l->spr1->y += dy;
     l->spr2->y += dy;
 
-    if ((l->map_y & 15) == 8) {
-      int map_ty = l->map_y >> 4;
-      int dy = -l->spr1->y - 8;
-      copy_zone(l->scr1, l->tile_map, 0, dy, map_ty, map_ty + 1, 0, SCREEN_WIDTH/16);
+    int ymod16 = l->map_y & 15;
+    if (ymod16 >= 8) {
+      int row = l->map_y >> 4;
+      if (row != l->last_zone_1) {
+        int dy = -l->spr1->y - ymod16;
+        copy_zone(l->scr1, l->tile_map, 0, dy, row, row + 1, 0, SCREEN_WIDTH/16);
+        l->last_zone_1 = row;
+      }
     }
   }
 }

@@ -9,12 +9,6 @@
 #include <screen.h>
 #include "map.h"
 
-typedef struct {
-  uint16_t ncols;
-  uint16_t nrows;
-  uint8_t data[];
-} level_t;
-
 enum scroll_dir {
   SCROLL_DIR_HORIZONTAL = 0,
   SCROLL_DIR_VERTICAL
@@ -30,6 +24,7 @@ typedef struct map_layer {
 
   screen *scr1, *scr2;
   sprite *spr1, *spr2;
+  int last_zone_1, last_zone_2;
 } map_layer_t;
 
 void init_map_layer(map_layer_t *l, Map *tile_map, enum scroll_dir dir, int x, int y);
