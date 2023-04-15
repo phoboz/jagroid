@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 
   TOMREGS->bg = 0xff;
   tile_map = load_map(16, 16, TILE_IMAGE_WIDTH, TILE_IMAGE_HEIGHT, &tiles_01, &level_01);
-  init_map_layer(&map_layer, tile_map, SCROLL_DIR_HORIZONTAL, 0, 0);
+  init_map_layer(&map_layer, tile_map, SCROLL_DIR_HORIZONTAL, 0);
 
   memcpy((void*)TOMREGS->clut1, tiles_pal, MAP_NCOLS * sizeof(uint16_t));
 
@@ -115,7 +115,7 @@ int main(int argc, char *argv[]) {
         free_map(tile_map);
         tile_map = load_map(16, 16, TILE_IMAGE_WIDTH, TILE_IMAGE_HEIGHT, &tiles_01, &level_01);
         int x = rand() % (tile_map->w - 20);
-        init_map_layer(&map_layer, tile_map, SCROLL_DIR_HORIZONTAL, x, 0);
+        init_map_layer(&map_layer, tile_map, SCROLL_DIR_HORIZONTAL, x);
 	show_map_layer(game_display, 0, &map_layer);
         lock_keys |= JOYPAD_1;
       }
@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
         free_map(tile_map);
         tile_map = load_map(16, 16, TILE_IMAGE_WIDTH, TILE_IMAGE_HEIGHT, &tiles_02, &level_02);
         int y = rand() % (tile_map->h - 12);
-        init_map_layer(&map_layer, tile_map, SCROLL_DIR_VERTICAL, 0, y);
+        init_map_layer(&map_layer, tile_map, SCROLL_DIR_VERTICAL, y);
 	show_map_layer(game_display, 0, &map_layer);
         lock_keys |= JOYPAD_2;
       }
