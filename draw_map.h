@@ -18,8 +18,9 @@ enum scroll_dir {
 
 typedef struct map_layer {
   Map *tile_map;
+  enum scroll_dir dir;
   int map_pos;
-  int layer_width, layer_height;
+  int map_size;
   screen *screen1, *screen2;
   phrase *screen1_data, *screen2_data;
   sprite *screen1_sprite, *screen2_sprite;
