@@ -9,6 +9,8 @@
 #include <screen.h>
 #include "map.h"
 
+#define MAX_SCROLL_SPEED  4
+
 enum scroll_dir {
   SCROLL_DIR_HORIZONTAL = 0,
   SCROLL_DIR_VERTICAL

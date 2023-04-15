@@ -91,22 +91,22 @@ int main(int argc, char *argv[]) {
     if(cmd & JOYPAD_RIGHT) {
       scroll_map_layer_right(&map_layer, SCROLL_SPEED_1);
 #ifdef DEBUG
-  fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
+      fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
 #endif
     } else if(cmd & JOYPAD_LEFT) {
       scroll_map_layer_left(&map_layer, SCROLL_SPEED_2);
 #ifdef DEBUG
-  fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
+      fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
 #endif
     } else if (cmd & JOYPAD_DOWN) {
       scroll_map_layer_down(&map_layer, SCROLL_SPEED_1);
 #ifdef DEBUG
-  fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
+      fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
 #endif
     } else if (cmd & JOYPAD_UP) {
       scroll_map_layer_up(&map_layer, SCROLL_SPEED_2);
 #ifdef DEBUG
-  fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
+      fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
 #endif
     } else if (cmd & JOYPAD_1) {
       if ((lock_keys & JOYPAD_1) == 0) {

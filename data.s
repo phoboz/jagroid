@@ -5,22 +5,22 @@
 	.globl  _tiles_pal
 	.even
 _tiles_pal:
-	incbin  "images/tiles_cry.pal"
+	incbin  "levels/tunnel_tiles_cry.pal"
 
 	.globl  _tiles_01
 	.phrase
 _tiles_01:
-	incbin  "images/tiles_01.lz77"
+	incbin  "levels/tunnel_tiles.lz77"
 
 	.globl  _tiles_02
 	.phrase
 _tiles_02:
-	incbin  "images/tiles_02.lz77"
+	incbin  "levels/tiles_02.lz77"
 
 	.globl	_level_01
 	.even
 _level_01:
-	incbin	"levels/level_01.lev"
+	incbin	"levels/tunnel.lev"
 
 	.globl	_level_02
 	.even

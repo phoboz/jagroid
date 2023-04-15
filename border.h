@@ -5,10 +5,10 @@
 
 #define BORDER_WIDTH                    64
 #define BORDER_HEIGHT                   128
-#define BORDER_X0                       0
-#define BORDER_X1                       SCREEN_WIDTH
-#define BORDER_Y0                       0
-#define BORDER_Y1                       SCREEN_HEIGHT
+#define BORDER_X0                       4
+#define BORDER_X1                       (SCREEN_WIDTH - BORDER_X0)
+#define BORDER_Y0                       4
+#define BORDER_Y1                       (SCREEN_HEIGHT - BORDER_Y0)
 
 #define BORDER_LAYER                    14
 
