@@ -37,8 +37,6 @@ __inline__ static void copy_row(screen *tgt, Map *tile_map, int lcol, int hcol, 
 }
 
 void init_map_layer(map_layer_t *l, Map *tile_map, enum scroll_dir dir, int pos) {
-  int i;
-
   l->tile_map = tile_map;
   l->dir = dir;
   l->screen1 = new_screen();
@@ -107,6 +105,7 @@ void init_map_layer(map_layer_t *l, Map *tile_map, enum scroll_dir dir, int pos)
   }
 
   sortList(l->objList);
+  sortList(l->areaList);
 
 #ifdef DEBUG
   fprintf(fp, "O:");

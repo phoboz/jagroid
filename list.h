@@ -13,7 +13,7 @@ struct Node
 void insertList(struct Node **start_ref, int key, void *data); 
   
 /* Function to bubble sort the given linked list */
-void bubbleSortList(struct Node *start); 
+void sortList(struct Node *start); 
 
 #ifdef DEBUG
 /* Function to print nodes in a given linked list */
