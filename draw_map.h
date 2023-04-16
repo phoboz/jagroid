@@ -7,6 +7,7 @@
 #include <display.h>
 #include <sprite.h>
 #include <screen.h>
+#include "list.h"
 #include "map.h"
 
 #define MAX_SCROLL_SPEED  4
@@ -21,6 +22,10 @@ typedef struct map_layer {
   enum scroll_dir dir;
   int map_pos;
   int map_size;
+
+  struct Node *objList;
+  struct Node *areaList;
+
   screen *screen1, *screen2;
   phrase *screen1_data, *screen2_data;
   sprite *screen1_sprite, *screen2_sprite;

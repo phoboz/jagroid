@@ -904,4 +904,43 @@
    eJzt11WUlGUYB/D5VqltSqWWpUElRewAaWwFaWxFaWxFlrYV6bClsS4MGuvCoLEuDJoFvDBojN93jns558zMztmdc+Sc+V3M977/732e+b7nYgojkcg+9nOAwpPf/5ff17GeDWxkE5vZwlYOcojDHOEoxzjOiRTI1w4ikXwK0uJTSyYvKP3+UqX+bWxnBzvZxW72sJcKzkong0yyyCaH3KD08+fQOoHfsaVMq6D0+0uV+n0ibhs5hVMpQ1nKUT7cRzoZZJJFNjnkUpFKVKZKiuWLZibWmSyp+uOtK57zX4vxOYb7XucN3qQqp3E6Z1CN6tSgZlgzeWFN5FOHutSjPg1oSCMap1j+3P9mJpaZbBOUXP3x1hXP+e/H+BzDfR/wIR/RhDM5i7NpSjOa04KWtApronXYA204j/O5gAu5iItP5ks9/0WMzzHc9yVf8TWXcCmXcTltaccVtKcDHelEZ7rQlW5cyVVczTVcW4r5eeZmPgtYyCIWs4SlvMXbvMO7vBekVv2x5BPpMVodP/ITP/ML13E9N3Aj3enBTfSkF73pQ1/60Z8B3Mwt3Mpt3F6K+WV6Xs4KVrKK1axhLR/zCZ/yGZ8HqVV/LPlEeoxWx2/8zh/8yR3cyV3czUDu4V4GMZghDGUYwxnBSO7jfh7gQR6Kkm+rnnbhu0l7OtCRTnSmC13pFs5okNj56+TWs4GNbGIzW9jKN3zLd3zPD0Hs9Re3/2TlE+kxWh1lrJWlHOV52LVHeJTHGMXjjKaAMYxlHOOZwEQm8QRP8hRP80yUfHfn9AjfTXrSi970oS/96M+AcEaDxM7fJredHexkF7vZw14K2cd+DvBrEHv9xe0/WflEeoxWRzVr1alBTZ517Tme5wUm8yJTmMo0pjODmcxiNnOYy0u8zCu8GiU/MJzx8N1kEIMZwlCGMZwRjAxnNEjs/INyhzjMEY5yjOOc4C/+5h/CP8pBWuz1F7f/ZOUT6TFaHU3taUZzWrDItcUsYSnzmM8CFkaSsz4qnPHw3aSAMYxlHOOZwEQmhTMaxHdG0VoFPaeTQSZZZJNDLhWpRGWqUDUtuT2WxHoiPcZ6/1WsZg1rWcZyVrAySeuTwxlnClOZxnRmMJNZzGYOc4P4zihaq6XnPGqTTx3qUo/6NKAhjWhMk7Tk9lgS64n0GOv9/wVAqUG2
   </data>
  </layer>
+ <objectgroup name="objects" width="130" height="13">
+  <object name="enemy05" type="enemy" x="340" y="112" width="32" height="80">
+   <properties>
+    <property name="index" value="0"/>
+   </properties>
+  </object>
+  <object name="enemy02" type="enemy" x="48" y="111" width="32" height="80">
+   <properties>
+    <property name="index" value="0"/>
+   </properties>
+  </object>
+  <object name="enemy03" type="enemy" x="1618" y="108" width="32" height="80">
+   <properties>
+    <property name="index" value="0"/>
+   </properties>
+  </object>
+  <object name="enemy04" type="enemy" x="1272" y="113" width="32" height="80">
+   <properties>
+    <property name="index" value="0"/>
+   </properties>
+  </object>
+  <object name="enemy03" type="enemy" x="701" y="111" width="32" height="80">
+   <properties>
+    <property name="index" value="0"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="areas" width="130" height="13">
+  <object name="exit" type="door" x="2061" y="100" width="17" height="87">
+   <properties>
+    <property name="index" value="0"/>
+   </properties>
+  </object>
+  <object name="entry" type="door" x="2" y="99" width="17" height="87">
+   <properties>
+    <property name="index" value="0"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
   lock_keys = 0;
 
 #ifdef DEBUG
-  fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
+  fprintf(fp, "%d\n", map_layer.map_pos);
 #endif
 
   while(1) {
@@ -93,28 +93,28 @@ int main(int argc, char *argv[]) {
         scroll_map_layer_right(&map_layer, SCROLL_SPEED_1);
       }
 #ifdef DEBUG
-      fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
+      fprintf(fp, "%d\n", map_layer.map_pos);
 #endif
     } else if(cmd & JOYPAD_LEFT) {
       if (map_layer.dir == SCROLL_DIR_HORIZONTAL) {
         scroll_map_layer_left(&map_layer, SCROLL_SPEED_2);
       }
 #ifdef DEBUG
-      fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
+      fprintf(fp, "%d\n", map_layer.map_pos);
 #endif
     } else if (cmd & JOYPAD_DOWN) {
       if (map_layer.dir == SCROLL_DIR_VERTICAL) {
         scroll_map_layer_down(&map_layer, SCROLL_SPEED_1);
       }
 #ifdef DEBUG
-      fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
+      fprintf(fp, "%d\n", map_layer.map_pos);
 #endif
     } else if (cmd & JOYPAD_UP) {
       if (map_layer.dir == SCROLL_DIR_VERTICAL) {
         scroll_map_layer_up(&map_layer, SCROLL_SPEED_2);
       }
 #ifdef DEBUG
-      fprintf(fp, "%d, %d\n", map_layer.map_x, map_layer.map_y);
+      fprintf(fp, "%d\n", map_layer.map_pos);
 #endif
     } else if (cmd & JOYPAD_1) {
       if ((lock_keys & JOYPAD_1) == 0) {

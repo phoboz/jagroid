@@ -37,6 +37,8 @@ __inline__ static void copy_row(screen *tgt, Map *tile_map, int lcol, int hcol, 
 }
 
 void init_map_layer(map_layer_t *l, Map *tile_map, enum scroll_dir dir, int pos) {
+  int i;
+
   l->tile_map = tile_map;
   l->dir = dir;
   l->screen1 = new_screen();
@@ -63,6 +65,9 @@ void init_map_layer(map_layer_t *l, Map *tile_map, enum scroll_dir dir, int pos)
 
   l->map_pos = pos << 4;
 
+  l->objList = 0;
+  l->areaList = 0;
+
   if (dir == SCROLL_DIR_HORIZONTAL) {
     int lcol = pos;
     int hcol = SCREEN_WIDTH/16 + pos;
@@ -72,6 +77,14 @@ void init_map_layer(map_layer_t *l, Map *tile_map, enum scroll_dir dir, int pos)
       scr->y = 0;
       copy_column(scr, tile_map, 0, SCREEN_HEIGHT/16, i);
       scr->x += 16;
+    }
+
+    for (i = 0; i < tile_map->num_objects; i++) {
+      insertList(&l->objList, tile_map->objects[i].x, &tile_map->objects[i]);
+    }
+
+    for (i = 0; i < tile_map->num_areas; i++) {
+      insertList(&l->areaList, tile_map->areas[i].x, &tile_map->areas[i]);
     }
   } else if (dir == SCROLL_DIR_VERTICAL) {
     int lrow = pos;
@@ -83,7 +96,24 @@ void init_map_layer(map_layer_t *l, Map *tile_map, enum scroll_dir dir, int pos)
       copy_row(scr, tile_map, 0, SCREEN_WIDTH/16, i);
       scr->y += 16;
     }
+
+    for (i = 0; i < tile_map->num_objects; i++) {
+      insertList(&l->objList, tile_map->objects[i].y, &tile_map->objects[i]);
+    }
+
+    for (i = 0; i < tile_map->num_areas; i++) {
+      insertList(&l->areaList, tile_map->areas[i].y, &tile_map->areas[i]);
+    }
   }
+
+  sortList(l->objList);
+
+#ifdef DEBUG
+  fprintf(fp, "O:");
+  printList(l->objList);
+  fprintf(fp, "A:");
+  printList(l->areaList);
+#endif
 }
 
 void show_map_layer(display *d, int layer, map_layer_t *l) {
